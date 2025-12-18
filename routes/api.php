@@ -2,12 +2,14 @@
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Admin\AuthController;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FreeTranslationController;
+use App\Http\Controllers\Auth\PasswordResetController;
 
 
 
@@ -24,6 +26,10 @@ use App\Http\Controllers\FreeTranslationController;
 
 
 Route::post('/admin/login', [AuthController::class, 'login']);
+
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
+Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
+
 // /partners
 Route::get('/partners', [PartnerController::class, 'index']);
 Route::post('/partners', [PartnerController::class, 'store']);
@@ -58,6 +64,17 @@ Route::post('/contact-messages/{id}/read-status', [ContactController::class, 'up
 
 
 
+
+// // Public (للموقع الرئيسي)
+// Route::get('/articles', [ArticleController::class, 'publicIndex']);
+// Route::get('/articles/{slug}', [ArticleController::class, 'publicShow']);
+
+// Admin (Dashboard)
+Route::get('/articles', [ArticleController::class, 'index']); //list
+Route::get('/articles/{id}', [ArticleController::class, 'show']); //details
+Route::post('/articles', [ArticleController::class, 'store']);
+Route::put('/articles/{id}', [ArticleController::class, 'update']); //update
+Route::delete('/articles/{id}', [ArticleController::class, 'destroy']); //delete
 
 
 

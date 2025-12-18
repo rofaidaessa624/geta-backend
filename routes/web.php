@@ -9,8 +9,19 @@ use App\Http\Controllers\Admin\AuthController;
 |--------------------------------------------------------------------------
 */
 
+// Route::get('/', function () {
+//     return file_get_contents(public_path('index.html'));
+// });
+
+// Route::get('/{any}', function () {
+//     return file_get_contents(public_path('index.html'));
+// })->where('any', '.*');
+
 Route::get('/', function () {
-    return view('welcome');
+    return response()->json([
+        'status' => 'ok',
+        'message' => 'API is running'
+    ]);
 });
 
 Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
