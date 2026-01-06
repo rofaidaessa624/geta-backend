@@ -97,7 +97,9 @@ Route::prefix('admin')->group(function () {
  | ARTICLES
  ================================= */
 /* Dashboard */
+Route::get('/public/articles', [ArticleController::class, 'publicIndex']);
 Route::prefix('admin')->group(function () {
+
     Route::get('/articles', [ArticleController::class, 'index']);
     Route::post('/articles', [ArticleController::class, 'store']);
     Route::get('/articles/{id}', [ArticleController::class, 'show']);
