@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 
+use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
@@ -61,3 +62,14 @@ Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('admi
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 })->name('admin.dashboard');
+
+
+
+Route::get('/test-mail', function () {
+    Mail::raw('Test email from Hostinger Laravel', function ($message) {
+        $message->to('rofaidaessa6@gmail.com')
+                ->subject('SMTP Test - Hostinger');
+    });
+
+    return 'Mail sent (if no errors).';
+});
