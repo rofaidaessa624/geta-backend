@@ -50,6 +50,14 @@ Route::prefix('admin')->group(function () {
 /* ================================
  | SERVICES (Admin)
  ================================= */
+ /* ================================
+ | SERVICES (Public)
+ ================================= */
+Route::get('/services', [ServiceController::class, 'index']);
+
+/* لو عايزة تحافظي على ال endpoint القديم */
+Route::get('/public/services', [ServiceController::class, 'index']);
+
 Route::prefix('admin')->group(function () {
     Route::get('/services', [ServiceController::class, 'index']);
     Route::post('/services', [ServiceController::class, 'store']);
