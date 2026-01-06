@@ -16,10 +16,15 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FreeTranslationController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\FreeTransController;
+
+
 
 /* ================================
  | AUTH
  ================================= */
+ Route::prefix('public')->group(function () {
+
 Route::post('/admin/login', [AuthController::class, 'login']);
 
 Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
@@ -85,8 +90,11 @@ Route::get('/public/articles/{slug}', [ArticleController::class, 'publicShow']);
 /* ================================
  | FREE TRANSLATION
  ================================= */
-Route::post('/free-translation-request', [FreeTranslationController::class, 'store']);
+Route::post('/free-translation', [FreeTransController::class, 'send']);
+ Route::post('/free-translation-request', [FreeTranslationController::class, 'store']);
 Route::get('/free-translation-requests', [FreeTranslationController::class, 'index']);
 Route::get('/free-translation-requests/{id}', [FreeTranslationController::class, 'show']);
 Route::post('/free-translation-requests/{id}', [FreeTranslationController::class, 'updateStatus']);
 Route::delete('/free-translation-requests/{id}', [FreeTranslationController::class, 'destroy']);
+
+});
