@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 /* ================================
  | Controllers
  ================================= */
-use App\Http\Controllers\Admin\AuthController;
+// use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\LanguageController;
