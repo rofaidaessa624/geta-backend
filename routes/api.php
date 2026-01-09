@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\LanguageController;
-use App\Http\Controllers\AuthController;
+// use App\Http\Controllers\AuthController;
+
+use App\Http\Controllers\AdminAuthController;
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ContactController;
@@ -134,10 +136,18 @@ Route::prefix('admin')->group(function () {
 });
 
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+Route::post('/admin/login', [AdminAuthController::class, 'login']);
+Route::post('/admin/forgot-password', [AdminAuthController::class, 'forgotPassword']);
+Route::post('/admin/reset-password', [AdminAuthController::class, 'resetPassword']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
+Route::middleware('auth:admin-api')->group(function () {
+    Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
+
+    // ✅ test route
+    Route::get('/admin/me', function (Request $request) {
+        return response()->json([
+            'success' => true,
+            'admin' => $request->user()
+        ]);
+    });
 });
