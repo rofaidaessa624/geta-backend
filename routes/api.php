@@ -97,21 +97,20 @@ Route::prefix('admin')->group(function () {
  | ARTICLES
  ================================= */
 /* Dashboard */
-Route::get('/public/articles', [ArticleController::class, 'publicIndex']);
-Route::get('/public/articles/{identifier}', [ArticleController::class, 'publicShowBySlugOrId']);
-
-Route::prefix('admin')->group(function () {
-
-    Route::get('/articles', [ArticleController::class, 'index']);
-    Route::post('/articles', [ArticleController::class, 'store']);
-    Route::get('/articles/{id}', [ArticleController::class, 'show']);
-    Route::put('/articles/{id}', [ArticleController::class, 'update']);
-    Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
+/* PUBLIC */
+Route::prefix('public')->group(function () {
+    Route::get('/articles', [ArticleController::class, 'publicIndex']);
+    Route::get('/articles/{identifier}', [ArticleController::class, 'publicShowBySlugOrId']);
 });
 
-/* Website */
-Route::get('/articles', [ArticleController::class, 'publicIndex']);
-Route::get('/articles/{slug}', [ArticleController::class, 'publicShow']);
+/* ADMIN */
+Route::prefix('admin')->group(function () {
+    Route::get('/articles', [ArticleController::class, 'index']);
+    Route::post('/articles', [ArticleController::class, 'store']);
+    Route::get('/articles/{id}', [ArticleController::class, 'show'])->whereNumber('id');
+    Route::put('/articles/{id}', [ArticleController::class, 'update'])->whereNumber('id');
+    Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->whereNumber('id');
+});
 
 
 /* ================================
