@@ -112,6 +112,9 @@ Route::prefix('admin')->group(function () {
     Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->whereNumber('id');
 });
 
+/* Alias - keep old endpoint */
+Route::get('/articles', [ArticleController::class, 'publicIndex']);
+Route::get('/articles/{identifier}', [ArticleController::class, 'publicShowBySlugOrId']);
 
 /* ================================
  | FREE TRANSLATION

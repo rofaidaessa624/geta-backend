@@ -154,10 +154,11 @@ class ArticleController extends Controller
         }
 
         /* Image upload */
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('articles', 'public');
-            $validated['image_url'] = 'storage/' . $path;
-        }
+     if ($request->hasFile('image')) {
+    $path = $request->file('image')->store('articles', 'public');
+    $validated['image_url'] = basename($path); // same as store
+}
+
 
         $article->update($validated);
 
