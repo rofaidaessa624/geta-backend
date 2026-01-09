@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\LanguageController;
+use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ContactController;
@@ -19,12 +20,7 @@ use App\Http\Controllers\Api\UserController;
 
 /* ================================
  | AUTH
- ================================= */
-Route::post('/admin/login', [AuthController::class, 'login']);
-
-Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
-Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
-
+ ================================= *
 
 /* ================================
  | PARTNERS (Public)
@@ -135,4 +131,13 @@ Route::prefix('admin')->group(function () {
     Route::get('/free-translation-requests/{id}', [FreeTranslationController::class, 'show']);
     Route::post('/free-translation-requests/{id}', [FreeTranslationController::class, 'updateStatus']);
     Route::delete('/free-translation-requests/{id}', [FreeTranslationController::class, 'destroy']);
+});
+
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
