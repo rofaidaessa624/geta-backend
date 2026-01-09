@@ -16,7 +16,7 @@ class Article extends Model
   'summary_ar',
   'summary_en',
   'body_ar',
-  'body_en',
+  'body_en',a
   'image_url',
   'sort_order',
   'is_published',

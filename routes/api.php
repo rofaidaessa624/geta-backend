@@ -98,6 +98,8 @@ Route::prefix('admin')->group(function () {
  ================================= */
 /* Dashboard */
 Route::get('/public/articles', [ArticleController::class, 'publicIndex']);
+Route::get('/public/articles/{identifier}', [ArticleController::class, 'publicShowBySlugOrId']);
+
 Route::prefix('admin')->group(function () {
 
     Route::get('/articles', [ArticleController::class, 'index']);

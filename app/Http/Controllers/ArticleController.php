@@ -245,6 +245,37 @@ class ArticleController extends Controller
             'errors'  => null,
         ]);
     }
+    /** Show published article by slug OR id (website) */
+public function publicShowBySlugOrId($identifier)
+{
+    $query = Article::where('is_published', true);
+
+    // ✅ لو identifier رقم → ID
+    if (is_numeric($identifier)) {
+        $article = $query->where('id', $identifier)->first();
+    } 
+    // ✅ لو نص → slug
+    else {
+        $article = $query->where('slug', $identifier)->first();
+    }
+
+    if (!$article) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Article not found.',
+            'data'    => null,
+            'errors'  => null,
+        ], 404);
+    }
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Article fetched successfully.',
+        'data'    => $article,
+        'errors'  => null,
+    ]);
+}
+
 
 
 }
