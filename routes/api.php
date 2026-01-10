@@ -27,7 +27,9 @@ use App\Http\Controllers\Api\UserController;
 /* ================================
  | PARTNERS (Public)
  ================================= */
-Route::get('/partners', [PartnerController::class, 'publicIndex']);
+Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'send']);
+
+ Route::get('/partners', [PartnerController::class, 'publicIndex']);
 
 /* لو partner بيضرب /partner بدل /partners */
 Route::get('/partner', [PartnerController::class, 'publicIndex']);
@@ -115,6 +117,7 @@ Route::prefix('articles')->group(function () {
     // ✅ delete
     Route::delete('{id}', [ArticleController::class, 'destroy']); 
 });
+
 
 
 /* Alias - keep old endpoint */
