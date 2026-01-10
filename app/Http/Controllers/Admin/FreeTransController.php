@@ -3,69 +3,47 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\FreeTranslationMail;
+use Illuminate\Support\Facades\Mail;
+
 
 class FreeTranslationController extends Controller
 {
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name'   => 'required|string|max:255',
-            'email'  => 'required|email|max:255',
-            'mobile' => 'required|string|max:30',
-            'file'   => 'required|file|max:5120',
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        "name" => "required|string|max:255",
+        "email" => "required|email",
+        "mobile" => "required|string|max:20",
+        "source_language" => "required|string|max:50",
+        "target_language" => "required|string|max:50",
+        "file" => "required|file|max:10240",
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors'  => $validator->errors()
-            ], 422);
-        }
+    // ✅ upload file
+    $filePath = $request->file("file")->store("free_translation", "public");
+    $fileUrl = asset("storage/" . $filePath);
 
-        $filePath = $request->file('file')->store('free_translations', 'public');
+    // ✅ save database (لو عندك Model)
+    // FreeTranslationRequest::create([...]);
 
-        $mailData = [
-            'name'   => $request->name,
-            'email'  => $request->email,
-            'mobile' => $request->mobile,
-        ];
+    // ✅ send mail
+    Mail::to(env('CONTACT_RECEIVER_EMAIL'))->send(new FreeTranslationMail([
+        "name" => $request->name,
+        "email" => $request->email,
+        "mobile" => $request->mobile,
+        "source_language" => $request->source_language,
+        "target_language" => $request->target_language,
+        "file_url" => $fileUrl
+    ]));
 
-        try {
+    return response()->json([
+        "success" => true,
+        "message" => "Request sent successfully!",
+        "file" => $fileUrl
+    ]);
+}
 
-            $fileFullPath = Storage::disk('public')->path($filePath);
-            $fileUrl = url('/storage/' . $filePath);
-
-            $body =
-                "New free translation request received:\r\n\r\n" .
-                "Name: {$mailData['name']}\r\n" .
-                "Email: {$mailData['email']}\r\n" .
-                "Mobile: {$mailData['mobile']}\r\n" .
-                "File URL: {$fileUrl}\r\n";
-
-            Mail::raw($body, function ($message) use ($fileFullPath) {
-       $message->to('info@transgateacd.com')
-        ->cc('transgateac@outlook.com')
-                        ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
-                        ->subject('New Free Translation Request');
-
-                if (file_exists($fileFullPath)) {
-                    $message->attach($fileFullPath);
-                }
-            });
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Request sent successfully!',
-            ], 200);
-
-        } catch (\Throwable $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Mail failed: ' . $e->getMessage(),
-            ], 500);
-        }
-    }
 }

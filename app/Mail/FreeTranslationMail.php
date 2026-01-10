@@ -10,26 +10,16 @@ class FreeTranslationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $name;
-    public $email;
-    public $mobile;
-    public $file;
+    public $data;
 
-    public function __construct($name, $email, $mobile, $file)
+    public function __construct($data)
     {
-        $this->name = $name;
-        $this->email = $email;
-        $this->mobile = $mobile;
-        $this->file = $file;
+        $this->data = $data;
     }
 
     public function build()
     {
-        return $this->subject('New Free Translation Request')
-            ->view('emails.free_translation')
-            ->attach($this->file->getRealPath(), [
-                'as' => $this->file->getClientOriginalName(),
-                'mime' => $this->file->getMimeType(),
-            ]);
+        return $this->subject("New Free Translation Request")
+                    ->view('emails.free_translation');
     }
 }
