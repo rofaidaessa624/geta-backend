@@ -82,7 +82,6 @@ Route::prefix('admin')->group(function () {
 /* ================================
  | CONTACT
  ================================= */
-Route::post('/contact', [ContactController::class, 'store']);
 
 Route::prefix('admin')->group(function () {
     Route::get('/contact-messages', [ContactController::class, 'index']);
